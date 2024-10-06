@@ -29,14 +29,14 @@ const ChatComponent = () => {
 
     return (
         <div style={{ position: 'relative' }}>
-            {/* Иконка чата */}
             <div onClick={toggleChat} style={{ cursor: 'pointer' }}>
-                <div className="d-flex align-items-center gap-10 text-white">
+                <div className="d-flex align-items-center gap-10  text-white">
                     <img src="/images/robotics.png" alt="chat icon" />
+                    <div>AI<br/> chat</div>
                 </div>
             </div>
 
-            {/* Чат */}
+
             {isChatOpen && (
                 <div className="chat-box" ref={chatRef}>
                     <div className="chat-header">
