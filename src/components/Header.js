@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {NavLink, Link} from "react-router-dom";
 import {BsSearch} from "react-icons/bs";
+import ChatComponent from "./ChatComponent";
 
 function Header() {
     const [username, setUsername] = useState('');
@@ -139,12 +140,7 @@ function Header() {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link to="/chat" className="d-flex align-items-center gap-10 text-white">
-                                        <img src="/images/robotics.png" alt="cart"/>
-                                        <div className="d-flex flex-column gap-10">
-
-                                        </div>
-                                    </Link>
+                                   <ChatComponent></ChatComponent>
                                 </div>
                             </div>
                         </div>

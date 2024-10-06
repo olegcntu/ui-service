@@ -967,3 +967,43 @@ product-card .product-details h5 {
     flex-wrap: wrap;
     gap: 10px;
 }
+
+
+/*chat*/
+.chat-box {
+    position: absolute;
+    top: 50px; /* Смещение вниз от иконки (можно регулировать) */
+    left: 20px; /* Смещение немного вправо от иконки */
+    width: 400px; /* Делаем чат длиннее */
+    height: 400px; /* Увеличиваем высоту чата */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.chat-header {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border-bottom: 1px solid #ccc;
+}
+
+.chat-body {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.chat-footer {
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.chat-footer input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
