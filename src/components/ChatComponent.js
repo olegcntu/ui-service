@@ -4,12 +4,11 @@ const ChatComponent = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const chatRef = useRef(null);
 
-    // Функция для переключения видимости чата
+
     const toggleChat = () => {
         setIsChatOpen(!isChatOpen);
     };
 
-    // Закрытие чата при клике вне чата
     const handleClickOutside = (event) => {
         if (chatRef.current && !chatRef.current.contains(event.target)) {
             setIsChatOpen(false);
@@ -32,24 +31,35 @@ const ChatComponent = () => {
             <div onClick={toggleChat} style={{ cursor: 'pointer' }}>
                 <div className="d-flex align-items-center gap-10  text-white">
                     <img src="/images/robotics.png" alt="chat icon" />
-                    <div>AI<br/> chat</div>
+                    <div>AI<br /> chat</div>
                 </div>
             </div>
-
 
             {isChatOpen && (
                 <div className="chat-box" ref={chatRef}>
                     <div className="chat-header">
-                        <h4>Чат</h4>
-                        <button onClick={() => setIsChatOpen(false)} style={{ cursor: 'pointer' }}>
-                            Закрыть
+                        <h4>AI Chat</h4>
+                        <h6>here you can ask any questions and the AI assistant will help you</h6>
+                        <button
+                            onClick={() => setIsChatOpen(false)}
+                            style={{
+                                cursor: 'pointer',
+                                background: 'none',
+                                border: 'none',
+                                fontSize: '20px',
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                            }}
+                        >
+                            &times;
                         </button>
                     </div>
                     <div className="chat-body">
-                        <p>Добро пожаловать! Как я могу помочь вам?</p>
+
                     </div>
                     <div className="chat-footer">
-                        <input type="text" placeholder="Напишите сообщение..." />
+                        <input type="text" placeholder="Write a message..." />
                     </div>
                 </div>
             )}

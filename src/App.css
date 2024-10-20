@@ -971,57 +971,40 @@ product-card .product-details h5 {
 
 /* Chat */
 .chat-box {
-    position: fixed; /* Фиксируем чат на экране */
-    bottom: 20px; /* Позиционируем чат внизу экрана */
-    right: 20px; /* Позиционируем чат справа */
-    width: 400px; /* Длина чата */
-    height: 800px; /* Высота чата */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 400px;
+    height: 810px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    overflow-x: hidden; /* Отключаем горизонтальный скроллинг */
-}
-
-/* Для экранов с шириной до 1600px */
-@media (max-width: 1600px) {
-    .chat-box {
-        right: 10px; /* Уменьшаем отступ справа для более узких экранов */
-        width: 350px; /* Уменьшаем ширину чата */
-    }
-}
-
-/* Для экранов с шириной до 600px */
-@media (max-width: 600px) {
-    .chat-box {
-        width: 90vw; /* Увеличиваем ширину на узких экранах */
-        height: 90vh; /* Чат будет занимать почти всю высоту экрана */
-        bottom: 0; /* Фиксируем чат внизу экрана */
-        right: 0; /* Убираем отступ справа для мобильных устройств */
-    }
-
-    .chat-body {
-        max-height: calc(100% - 150px); /* Увеличено пространство для чата на малых экранах */
-    }
+    overflow: hidden;
 }
 
 .chat-header {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #4c2a2c;
     color: white;
     border-bottom: 1px solid #ccc;
+    position: relative;
 }
 
 .chat-body {
     padding: 10px;
-    max-height: calc(100% - 120px); /* Чатное тело будет адаптироваться к оставшемуся пространству */
+    max-height: calc(100% - 120px);
     overflow-y: auto;
 }
 
 .chat-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     padding: 10px;
     border-top: 1px solid #ccc;
+    background-color: #fff;
 }
 
 .chat-footer input {
@@ -1029,4 +1012,12 @@ product-card .product-details h5 {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+
+@media (max-width: 1600px) {
+    .chat-box {
+        height: 610px;
+    }
+
 }
