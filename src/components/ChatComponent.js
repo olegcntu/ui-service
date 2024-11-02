@@ -4,13 +4,11 @@ const ChatComponent = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const chatRef = useRef(null);
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]); // Состояние для хранения истории сообщений
-
+    const [messages, setMessages] = useState([]);
 
     const toggleChat = () => {
         setIsChatOpen(!isChatOpen);
     };
-
 
     const handleClickOutside = (event) => {
         if (chatRef.current && !chatRef.current.contains(event.target)) {
@@ -29,13 +27,10 @@ const ChatComponent = () => {
         };
     }, [isChatOpen]);
 
-
     const handleSendMessage = async () => {
-
         if (message.trim()) {
-            setMessages((prevMessages) => [...prevMessages, message]);
+            setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
             setMessage('');
-
 
             try {
                 const response = await fetch('http://localhost:5026/user-and-question', {
@@ -43,7 +38,7 @@ const ChatComponent = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({message}),
+                    body: JSON.stringify({ message }),
                 });
 
                 if (!response.ok) {
@@ -52,11 +47,10 @@ const ChatComponent = () => {
 
                 const result = await response.json();
 
-
-                setMessages((prevMessages) => [...prevMessages, message]);
-                setMessage('');
+                setMessages((prevMessages) => [...prevMessages, { text: result.reply, sender: 'ai' }]);
             } catch (error) {
                 console.error('Error:', error);
+                setMessages((prevMessages) => [...prevMessages, { text: 'Ошибка при получении ответа от сервера', sender: 'ai' }]);
             }
         }
     };
@@ -91,11 +85,19 @@ const ChatComponent = () => {
                         </button>
                     </div>
                     <div className="chat-body" style={{ padding: '10px', maxHeight: '200px', overflowY: 'auto' }}>
-                        {}
                         {messages.length > 0 ? (
                             messages.map((msg, index) => (
-                                <div key={index} style={{ marginBottom: '10px', padding: '10px', backgroundColor: '#f1f1f1', borderRadius: '5px' }}>
-                                    {msg}
+                                <div
+                                    key={index}
+                                    style={{
+                                        marginBottom: '10px',
+                                        padding: '10px',
+                                        backgroundColor: msg.sender === 'user' ? '#f1f1f1' : '#e0ffe0',
+                                        borderRadius: '5px',
+                                        alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+                                    }}
+                                >
+                                    {msg.text}
                                 </div>
                             ))
                         ) : (
