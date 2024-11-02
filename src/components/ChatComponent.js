@@ -36,6 +36,9 @@ const ChatComponent = () => {
     }, [messages]);
 
     const handleSendMessage = async () => {
+        const token = localStorage.getItem('token') || null;
+        const email = localStorage.getItem('userEmail') || null;
+
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
             setMessage('');
@@ -46,7 +49,11 @@ const ChatComponent = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message }),
+                    body: JSON.stringify({
+                        message,
+                        token,
+                        email
+                    }),
                 });
 
                 if (!response.ok) {
