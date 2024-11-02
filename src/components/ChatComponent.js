@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const ChatComponent = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const chatRef = useRef(null);
+    const chatBodyRef = useRef(null);
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
@@ -27,6 +28,13 @@ const ChatComponent = () => {
         };
     }, [isChatOpen]);
 
+    // Прокрутка вниз при добавлении нового сообщения
+    useEffect(() => {
+        if (chatBodyRef.current) {
+            chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     const handleSendMessage = async () => {
         if (message.trim()) {
             setMessages((prevMessages) => [...prevMessages, { text: message, sender: 'user' }]);
@@ -42,7 +50,7 @@ const ChatComponent = () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Ошибка при отправке сообщения');
+                    throw new Error('Error sending message');
                 }
 
                 const result = await response.json();
@@ -50,7 +58,7 @@ const ChatComponent = () => {
                 setMessages((prevMessages) => [...prevMessages, { text: result.reply, sender: 'ai' }]);
             } catch (error) {
                 console.error('Error:', error);
-                setMessages((prevMessages) => [...prevMessages, { text: 'Ошибка при получении ответа от сервера', sender: 'ai' }]);
+                setMessages((prevMessages) => [...prevMessages, { text: 'Error receiving response from server', sender: 'ai' }]);
             }
         }
     };
@@ -84,7 +92,7 @@ const ChatComponent = () => {
                             &times;
                         </button>
                     </div>
-                    <div className="chat-body" style={{ padding: '10px', maxHeight: '200px', overflowY: 'auto' }}>
+                    <div className="chat-body" ref={chatBodyRef}>
                         {messages.length > 0 ? (
                             messages.map((msg, index) => (
                                 <div
@@ -104,32 +112,14 @@ const ChatComponent = () => {
                             <p>No messages yet</p>
                         )}
                     </div>
-                    <div className="chat-footer" style={{ display: 'flex', alignItems: 'center' }}>
+                    <div className="chat-footer">
                         <input
                             type="text"
                             placeholder="Write a message..."
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            style={{
-                                flex: 1,
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc',
-                            }}
                         />
-                        <button
-                            onClick={handleSendMessage}
-                            style={{
-                                marginLeft: '10px',
-                                padding: '10px 20px',
-                                backgroundColor: '#4CAF50',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer',
-                                fontWeight: 'bold',
-                            }}
-                        >
+                        <button onClick={handleSendMessage}>
                             Send
                         </button>
                     </div>

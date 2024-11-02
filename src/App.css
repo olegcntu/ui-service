@@ -975,13 +975,14 @@ product-card .product-details h5 {
     bottom: 20px;
     right: 20px;
     width: 400px;
-    height: 810px;
+    height: 600px;
     background-color: white;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .chat-header {
@@ -990,34 +991,39 @@ product-card .product-details h5 {
     color: white;
     border-bottom: 1px solid #ccc;
     position: relative;
+    flex: 0 0 auto; /* Фиксированная высота */
 }
 
 .chat-body {
     padding: 10px;
-    max-height: calc(100% - 120px);
     overflow-y: auto;
+    flex: 1 1 auto; /* Автоматически заполняет доступное пространство */
 }
 
 .chat-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     padding: 10px;
     border-top: 1px solid #ccc;
     background-color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto; /* Фиксированная высота */
 }
 
 .chat-footer input {
-    width: 100%;
+    flex: 1;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-
-@media (max-width: 1600px) {
-    .chat-box {
-        height: 610px;
-    }
-
+.chat-footer button {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
 }
+
