@@ -26,9 +26,11 @@ function SingleProduct() {
 
     useEffect(() => {
         fetchProduct();
+        addToHistory();
     }, []);
 
     const fetchProduct = async () => {
+        console.log("---------------")
         try {
             const response = await fetch(`${API_ROUTES.PRODUCT_SERVICE}/product/${id}`);
             const data = await response.json();
@@ -38,14 +40,38 @@ function SingleProduct() {
         }
     };
 
+    const addToHistory = async () => {
+        console.log("++++++++++++++++++++++")
+        const token = localStorage.getItem('token');
+        const qw = async () => {
+            try {
+                const requestBody = {
+                    productId: id,
+                };
+
+                const response = await fetch(`${API_ROUTES.PRODUCT_SERVICE}/product/history`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+            } catch (error) {
+
+            }
+        };
+        qw().then()
+    }
+
     if (!product) {
         return <div>Loading...</div>;
     }
     const buyItNow = () => {
         addToCart();
         navigate('/cart');
-
     }
+
 
     const addToCart = () => {
         const token = localStorage.getItem('token');
