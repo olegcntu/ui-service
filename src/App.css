@@ -970,56 +970,93 @@ product-card .product-details h5 {
 
 
 /* Chat */
+.chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #204d80;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+.chat-toggle:hover {
+    transform: scale(1.1);
+}
+
+.chat-toggle img {
+    width: 30px;
+    height: 30px;
+}
+
 .chat-box {
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: 400px;
     height: 600px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out;
+    z-index: 1001;
 }
 
 .chat-header {
-    padding: 10px;
-    background-color: #4c2a2c;
+    background-color: #204d80;
     color: white;
-    border-bottom: 1px solid #ccc;
-    position: relative;
-    flex: 0 0 auto; /* Фиксированная высота */
+    padding: 15px;
+    font-size: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .chat-body {
-    padding: 10px;
+    flex: 1;
+    padding: 15px;
     overflow-y: auto;
-    flex: 1 1 auto; /* Автоматически заполняет доступное пространство */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .chat-footer {
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    background-color: #fff;
+    padding: 15px;
     display: flex;
-    align-items: center;
     gap: 10px;
-    flex: 0 0 auto; /* Фиксированная высота */
+    border-top: 1px solid #ddd;
+    background-color: #f9f9f9;
 }
 
 .chat-footer input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
     border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .chat-footer button {
-    padding: 8px 20px;
-    background-color: #4CAF50;
+    padding: 10px 15px;
+    background-color: #204d80;
     color: white;
     border: none;
     border-radius: 5px;
@@ -1027,3 +1064,65 @@ product-card .product-details h5 {
     font-weight: bold;
 }
 
+.chat-footer button:hover {
+    background-color: #204d80;
+}
+
+.chat-message {
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.chat-message.user {
+    background-color: #d4edda;
+    align-self: flex-end;
+}
+
+.chat-message.ai {
+    background-color: #aedbea;
+    align-self: flex-start;
+}
+
+.no-messages {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.chat-message.thinking {
+    font-style: italic;
+    color: gray;
+}
+
+.loading-dots span {
+    animation: blink 1.5s infinite;
+}
+
+.loading-dots span:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.loading-dots span:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes blink {
+    0%, 20% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
