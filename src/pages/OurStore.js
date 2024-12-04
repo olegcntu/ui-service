@@ -14,6 +14,7 @@ const OurStore = () => {
     const [products, setProducts] = useState([]);
     const [randomProducts, setRandomProducts] = useState([]);
     const [priceFrom, setPriceFrom] = useState('');
+    const [randomProductTitle, setRandomProductTitle] = useState('');
     const [priceTo, setPriceTo] = useState('');
     const [isNew, setIsNew] = useState(true);
     const [isNotNew, setIsNotNew] = useState(true);
@@ -97,25 +98,74 @@ const OurStore = () => {
                         url += `?category=${category}`
                     }
                 }
-                console.log(url)
                 const response = await fetch(url);
 
                 const data = await response.json();
                 setProducts(data);
                 setCount(data.length)
-                if (data.length > 1) {
-                    const randomIndexes = [];
 
-                    while (randomIndexes.length < 2) {
-                        const randomIndex = Math.floor(Math.random() * data.length);
-                        if (!randomIndexes.includes(randomIndex)) {
-                            randomIndexes.push(randomIndex);
-                        }
+
+
+                const responseForAi = await fetch(`${API_ROUTES.PRODUCT_SERVICE}/product/`);
+                const dataForAi = await responseForAi.json();
+                let productsFetched = false;
+
+                try {
+                    const email = localStorage.getItem('userEmail');
+                    console.log("Email: " + email);
+
+                    if (!email) {
+                        throw new Error('Email not found in localStorage');
                     }
 
-                    const selectedProducts = randomIndexes.map((index) => data[index]);
-                    setRandomProducts(selectedProducts);
+                    const aiResponse = await fetch(`${API_ROUTES.AI_SERVICE}user-and-recommendation`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({email, category}),
+                    });
+
+                    const aiData = await aiResponse.json();
+                    console.log("AI Response:", aiData);
+
+                    if (aiData.reply && Array.isArray(aiData.reply)) {
+                        const recommendedIds = aiData.reply;
+                        console.log("Recommended IDs:", recommendedIds);
+
+                        const selectedProducts = dataForAi.filter(product =>
+                            recommendedIds.includes(product._id)
+                        );
+                        setRandomProducts(selectedProducts);
+
+                        setRandomProductTitle("AI Product");
+                        productsFetched = true;
+                    } else {
+                        throw new Error('Invalid AI response format');
+                    }
+                } catch (error) {
+                    console.error('Error fetching AI recommendations:', error);
                 }
+
+                if (!productsFetched) {
+                    console.log("Falling back to random products");
+                    if (data.length > 1) {
+                        const randomIndexes = [];
+
+                        while (randomIndexes.length < 2) {
+                            const randomIndex = Math.floor(Math.random() * data.length);
+                            if (!randomIndexes.includes(randomIndex)) {
+                                randomIndexes.push(randomIndex);
+                            }
+                        }
+
+                        const selectedProducts = randomIndexes.map(index => data[index]);
+                        setRandomProducts(selectedProducts);
+
+                        setRandomProductTitle("Random Products");
+                    }
+                }
+
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -326,11 +376,12 @@ const OurStore = () => {
                             </div>
                         </div>
                         <div className="filter-card mb-3">
-                            <h3 className="filter-title">Random product</h3>
+                            <h3 className="filter-title">{randomProductTitle}</h3>
                             <div>
                                 {randomProducts.map((product) => (
                                     <RandomProduct
                                         key={product.id}
+                                        id={product._id}
                                         imageSrc={product.images[0].url}
                                         title={product.title}
                                         rating={product.rating}
