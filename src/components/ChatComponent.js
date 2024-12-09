@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import API_ROUTES from "../api";
 
 const ChatComponent = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -10,7 +11,6 @@ const ChatComponent = () => {
     const chatRef = useRef(null);
     const chatBodyRef = useRef(null);
     const dragOffset = useRef({ x: 0, y: 0 });
-
     const toggleChat = () => {
         setIsChatOpen(!isChatOpen);
     };
@@ -69,10 +69,11 @@ const ChatComponent = () => {
             setIsThinking(true);
 
             try {
-                const response = await fetch('http://localhost:5026/user-and-question', {
+                const response = await fetch(`${API_ROUTES.AI_SERVICE}user-and-question`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+
                     },
                     body: JSON.stringify({
                         message,
@@ -87,7 +88,15 @@ const ChatComponent = () => {
 
                 const result = await response.json();
 
-                setMessages((prevMessages) => [...prevMessages, { text: result.reply, sender: 'ai' }]);
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    {
+                        text: result.reply, // Основной текст ответа
+                        products: result.products, // Массив продуктов с названиями и ссылками
+                        sender: 'ai'
+                    }
+                ]);
+
             } catch (error) {
                 console.error('Error:', error);
                 setMessages((prevMessages) => [...prevMessages, { text: 'Error receiving response from server', sender: 'ai' }]);
@@ -124,7 +133,22 @@ const ChatComponent = () => {
                     <div className="chat-body" ref={chatBodyRef}>
                         {messages.map((msg, index) => (
                             <div key={index} className={`chat-message ${msg.sender}`}>
-                                {msg.text}
+                                <p>{msg.text}</p>
+                                {msg.products && msg.products.length > 0 && (
+                                    <ul>
+                                        {msg.products.map((product, productIndex) => (
+                                            <li key={productIndex}>
+                                                <a
+                                                    href={product.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {product.name}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         ))}
                         {isThinking && (
