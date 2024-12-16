@@ -73,7 +73,7 @@ const ChatComponent = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-
+                        'X-API-KEY': API_ROUTES.REACT_APP_API_KEY,
                     },
                     body: JSON.stringify({
                         message,
